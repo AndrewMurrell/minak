@@ -7,8 +7,8 @@ import android.view.inputmethod.EditorInfo;
 
 
 public class Minak extends InputMethodService {
-	private MinakView minview;
-	
+	private MinakView minakView;
+
 	@Override
 	public void onStartInput(EditorInfo attribute, boolean restart) {
 		if (minview != null) {
@@ -19,14 +19,20 @@ public class Minak extends InputMethodService {
 			}
 		}
 	}
-	
+
 	@Override
 	public View onCreateInputView() {
 		final MinakView mv = getLayoutInflater().inflate(R.layout.minak, null);
-		
+
 		// TODO set Listeners here
-		
-		minview = mv;
+		mv.setOnCharacterEnteredListener(new OnCharacterEnteredListener()) {
+			@Override
+			public void characterEntered(String character) {
+				getCurrentInputConnection().commitText(character, 1);
+			}
+		}
+
+		minakView = mv;
 		return mv;
 	}
 }
