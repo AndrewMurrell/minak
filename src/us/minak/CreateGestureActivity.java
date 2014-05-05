@@ -18,7 +18,6 @@ package us.minak;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.view.MotionEvent;
 import android.gesture.GestureOverlayView;
@@ -26,8 +25,6 @@ import android.gesture.Gesture;
 import android.gesture.GestureLibrary;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.File;
 
 public class CreateGestureActivity extends Activity {
     private static final float LENGTH_THRESHOLD = 120.0f;
@@ -89,8 +86,7 @@ public class CreateGestureActivity extends Activity {
 
             setResult(RESULT_OK);
 
-            final String path = new File(Environment.getExternalStorageDirectory(),
-                    "gestures").getAbsolutePath();
+            final String path = SettingsUtil.getGestureFile(this).getAbsolutePath();
             Toast.makeText(this, getString(R.string.save_success, path), Toast.LENGTH_LONG).show();
         } else {
             setResult(RESULT_CANCELED);

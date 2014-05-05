@@ -248,8 +248,7 @@ public class SettingsActivity extends ListActivity {
             if (result == STATUS_NO_STORAGE) {
                 getListView().setVisibility(View.GONE);
                 mEmptyMessageView.setVisibility(View.VISIBLE);
-                mEmptyMessageView.setText(getString(R.string.gestures_error_loading,
-                        SettingsUtil.getGestureFile(mThis).getAbsolutePath()));
+                mEmptyMessageView.setText(getString(R.string.gestures_error_loading, SettingsUtil.getGestureFile(mThis).getAbsolutePath()));
             } else {
                 findViewById(R.id.addButton).setEnabled(true);
                 findViewById(R.id.reloadButton).setEnabled(true);
