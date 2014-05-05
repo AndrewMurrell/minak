@@ -27,9 +27,8 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.gesture.GestureLibrary;
 import android.gesture.Gesture;
-import android.gesture.GestureLibraries;
+import android.gesture.GestureLibrary;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.AdapterView;
@@ -49,7 +48,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Comparator;
 import java.util.Set;
-import java.io.File;
 
 public class SettingsActivity extends ListActivity {
     private static final int STATUS_SUCCESS = 0;
@@ -67,15 +65,11 @@ public class SettingsActivity extends ListActivity {
     // Type: long (id)
     private static final String GESTURES_INFO_ID = "gestures.info_id";
 
-    private final File mStoreFile = new File(Environment.getExternalStorageDirectory(), "gestures");
-
     private final Comparator<NamedGesture> mSorter = new Comparator<NamedGesture>() {
         public int compare(NamedGesture object1, NamedGesture object2) {
             return object1.name.compareTo(object2.name);
         }
     };
-
-    private static GestureLibrary sStore;
 
     private GesturesAdapter mAdapter;
     private GesturesLoadTask mTask;
@@ -84,6 +78,12 @@ public class SettingsActivity extends ListActivity {
     private Dialog mRenameDialog;
     private EditText mInput;
     private NamedGesture mCurrentRenameGesture;
+
+    private SettingsActivity mThis;
+    public SettingsActivity() {
+        super();
+        mThis = this;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,17 +94,10 @@ public class SettingsActivity extends ListActivity {
         mAdapter = new GesturesAdapter(this);
         setListAdapter(mAdapter);
 
-        if (sStore == null) {
-            sStore = GestureLibraries.fromFile(mStoreFile);
-        }
         mEmpty = (TextView) findViewById(android.R.id.empty);
         loadGestures();
 
         registerForContextMenu(getListView());
-    }
-
-    static GestureLibrary getStore() {
-        return sStore;
     }
 
     public void reloadGestures(View v) {
@@ -169,9 +162,9 @@ public class SettingsActivity extends ListActivity {
 
         long id = state.getLong(GESTURES_INFO_ID, -1);
         if (id != -1) {
-            final Set<String> entries = sStore.getGestureEntries();
+            final Set<String> entries = SettingsUtil.getGestureLibrary(this).getGestureEntries();
 out:        for (String name : entries) {
-                for (Gesture gesture : sStore.getGestures(name)) {
+                for (Gesture gesture : SettingsUtil.getGestureLibrary(this).getGestures(name)) {
                     if (gesture.getID() == id) {
                         mCurrentRenameGesture = new NamedGesture();
                         mCurrentRenameGesture.name = name;
@@ -279,9 +272,9 @@ out:        for (String name : entries) {
             for (int i = 0; i < count; i++) {
                 final NamedGesture gesture = adapter.getItem(i);
                 if (gesture.gesture.getID() == renameGesture.gesture.getID()) {
-                    sStore.removeGesture(gesture.name, gesture.gesture);
+                    SettingsUtil.getGestureLibrary(this).removeGesture(gesture.name, gesture.gesture);
                     gesture.name = mInput.getText().toString();
-                    sStore.addGesture(gesture.name, gesture.gesture);
+                    SettingsUtil.getGestureLibrary(this).addGesture(gesture.name, gesture.gesture);
                     break;
                 }
             }
@@ -300,8 +293,8 @@ out:        for (String name : entries) {
     }
 
     private void deleteGesture(NamedGesture gesture) {
-        sStore.removeGesture(gesture.name, gesture.gesture);
-        sStore.save();
+        SettingsUtil.getGestureLibrary(this).removeGesture(gesture.name, gesture.gesture);
+        SettingsUtil.getGestureLibrary(this).save();
 
         final GesturesAdapter adapter = mAdapter;
         adapter.setNotifyOnChange(false);
@@ -341,7 +334,7 @@ out:        for (String name : entries) {
                 return STATUS_NO_STORAGE;
             }
 
-            final GestureLibrary store = sStore;
+            final GestureLibrary store = SettingsUtil.getGestureLibrary(mThis);
 
             if (store.load()) {
                 for (String name : store.getGestureEntries()) {
@@ -388,7 +381,7 @@ out:        for (String name : entries) {
                 getListView().setVisibility(View.GONE);
                 mEmpty.setVisibility(View.VISIBLE);
                 mEmpty.setText(getString(R.string.gestures_error_loading,
-                        mStoreFile.getAbsolutePath()));
+                        SettingsUtil.getGestureFile(mThis).getAbsolutePath()));
             } else {
                 findViewById(R.id.addButton).setEnabled(true);
                 findViewById(R.id.reloadButton).setEnabled(true);

@@ -83,7 +83,7 @@ public class CreateGestureActivity extends Activity {
                 return;
             }
 
-            final GestureLibrary store = SettingsActivity.getStore();
+            final GestureLibrary store = SettingsUtil.getGestureLibrary(this);
             store.addGesture(name.toString(), mGesture);
             store.save();
 
