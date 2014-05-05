@@ -15,6 +15,7 @@
         android:gestureStrokeAngleThreshold="0.0"
         android:gestureStrokeLengthThreshold="0.0"
         android:gestureStrokeSquarenessThreshold="0.0"
-        android:gestureStrokeType="multiple" />
+        android:gestureStrokeType="multiple">
+	</us.minak.DrawingSpaceView>
 
 </us.minak.IMEView>

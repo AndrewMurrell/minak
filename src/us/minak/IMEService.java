@@ -18,7 +18,12 @@ public class IMEService extends InputMethodService {
 	public View onCreateInputView() {
 		final IMEView view = (IMEView) getLayoutInflater().inflate(R.layout.ime, null);
 		
-		// TODO: there probably needs to be more stuff here
+		view.setOnCharacterEnteredListener(new OnCharacterEnteredListener() {
+			@Override
+			public void characterEntered(String character) {
+				getCurrentInputConnection().commitText(character, 1);
+			}
+		});
 		
 		this.imeView = view;
 		return view;
