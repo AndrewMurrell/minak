@@ -7,11 +7,11 @@ public class MetaExpression {
 
 	private String value;
 
-	public getValue() {
+	public String getValue() {
 		return this.value;
 	}
 
-	public setValue(Sitring value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 }
