@@ -12,9 +12,9 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        
+
         <!-- The main input service -->
-        <service android:name="us.minak.IMEService"
+        <service android:name="IMEService"
             android:label="@string/minak_ime_label"
             android:permission="android.permission.BIND_INPUT_METHOD">
             <intent-filter>
@@ -22,16 +22,19 @@
             </intent-filter>
             <meta-data android:name="android.view.im" android:resource="@xml/method" />
         </service>
-        
+
         <!-- The settings menu activity -->
-        <!--
-        <activity android:name="us.minak.SettingsActivity"
-            android:label="@string/minak_settings_label">
+        <activity android:name=".SettingsActivity" android:label="@string/minak_settings_label">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        -->
+
+        <!-- The individual gesture editor -->
+        <activity
+            android:name="CreateGestureActivity"
+            android:label="@string/label_create_gesture" />
+
     </application>
 
 </manifest>
