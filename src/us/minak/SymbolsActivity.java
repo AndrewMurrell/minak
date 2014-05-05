@@ -26,7 +26,6 @@ public class SymbolsActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.symbols);
 		final GridView gridView = (GridView) findViewById(R.id.symbols_gridview);
 		final ArrayAdapter<Character> adapter = new ArrayAdapter<Character>(this, android.R.layout.simple_list_item_1,
 				SYMBOLS);
