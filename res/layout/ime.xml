@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<us.minak.IMEView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <us.minak.DrawingSpaceView
+        android:id="@+id/drawing_space"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:fadeDuration="300"
+        android:fadeEnabled="true"
+        android:fadeOffset="200"
+        android:gestureColor="#000"
+        android:gestureStrokeAngleThreshold="0.0"
+        android:gestureStrokeLengthThreshold="0.0"
+        android:gestureStrokeSquarenessThreshold="0.0"
+        android:gestureStrokeType="multiple">
+	</us.minak.DrawingSpaceView>
+
+</us.minak.IMEView>
