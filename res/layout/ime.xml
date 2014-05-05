@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     
-    <us.minak.DrawingSpaceView
+    <us.minak.IMEGestureOverlayView
         android:id="@+id/drawing_space"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
@@ -15,7 +15,6 @@
         android:gestureStrokeAngleThreshold="0.0"
         android:gestureStrokeLengthThreshold="0.0"
         android:gestureStrokeSquarenessThreshold="0.0"
-        android:gestureStrokeType="multiple">
-	</us.minak.DrawingSpaceView>
+        android:gestureStrokeType="multiple" />
 
 </us.minak.IMEView>

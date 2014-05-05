@@ -26,7 +26,7 @@ import android.gesture.GestureLibrary;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CreateGestureActivity extends Activity {
+public class SettingsCreateGestureActivity extends Activity {
     private static final float LENGTH_THRESHOLD = 120.0f;
 
     private Gesture mGesture;
@@ -36,7 +36,7 @@ public class CreateGestureActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.create_gesture);
+        setContentView(R.layout.gesture_create);
 
         mDoneButton = findViewById(R.id.done);
 

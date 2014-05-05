@@ -1,6 +1,6 @@
 package us.minak;
 
-import android.content.ContextWrapper;
+import android.content.Context;
 import android.gesture.GestureLibrary;
 import android.gesture.GestureLibraries;
 
@@ -13,7 +13,7 @@ public class SettingsUtil {
 	private static File            sGestureFile = null;
 	private static GestureLibrary  sGestureLibrary = null;
 
-	public static File           getGestureFile(ContextWrapper context) {
+	public static File           getGestureFile(Context context) {
 		if (sGestureFile == null)
 			sGestureFile = new File(context.getExternalFilesDir(null), "gestures.ttf");
 		// If the gestures file doesn't exist, copy the default gestures to it
@@ -33,7 +33,7 @@ public class SettingsUtil {
 		}
 		return sGestureFile;
 	}
-	public static GestureLibrary getGestureLibrary(ContextWrapper context) {
+	public static GestureLibrary getGestureLibrary(Context context) {
 		if (sGestureLibrary == null)
 			sGestureLibrary = GestureLibraries.fromFile(getGestureFile(context));
 		return sGestureLibrary;

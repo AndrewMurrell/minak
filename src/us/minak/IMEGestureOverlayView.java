@@ -16,7 +16,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.gesture.Gesture;
-import android.gesture.GestureLibraries;
 import android.gesture.GestureLibrary;
 import android.gesture.GestureOverlayView;
 import android.gesture.GestureOverlayView.OnGesturePerformedListener;
@@ -26,20 +25,20 @@ import android.util.AttributeSet;
 /**
  * Represent a space where drawing gestures are performed.
  */
-public class DrawingSpaceView extends GestureOverlayView implements OnGesturePerformedListener {
+public class IMEGestureOverlayView extends GestureOverlayView implements OnGesturePerformedListener {
 	private static final double SCORE_TRESHOLD = 3.0;
 	private final GestureLibrary mGestureLibrary;
-	private OnGestureRecognizedListener mOnGestureRecognizedListener;
+	private StringReciever mOutput;
 
-	public DrawingSpaceView(Context context, AttributeSet attrs) {
+	public IMEGestureOverlayView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		mGestureLibrary = GestureLibraries.fromRawResource(context, R.raw.gestures);
+		mGestureLibrary = SettingsUtil.getGestureLibrary(context);
 		mGestureLibrary.load();
 		addOnGesturePerformedListener(this);
 	}
 
-	public void setOnGestureRecognizedListener(OnGestureRecognizedListener onGestureRecognizedListener) {
-		mOnGestureRecognizedListener = onGestureRecognizedListener;
+	public void setOutput(StringReciever output) {
+		mOutput = output;
 	}
 
 	@Override
@@ -49,9 +48,9 @@ public class DrawingSpaceView extends GestureOverlayView implements OnGesturePer
 		if (!predictions.isEmpty()) {
 			bestPrediction = predictions.get(0);
 		}
-		if (mOnGestureRecognizedListener != null && bestPrediction != null) {
+		if (mOutput != null && bestPrediction != null) {
 			if (bestPrediction.score > SCORE_TRESHOLD) {
-				mOnGestureRecognizedListener.gestureRecognized(bestPrediction.name);
+				mOutput.putString(bestPrediction.name);
 			} else {
 				clear(false);
 			}

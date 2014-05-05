@@ -50,24 +50,22 @@
         <Button
             android:id="@+id/addButton"
             android:onClick="addGesture"
+			android:text="@string/button_add" 
 
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-
-            android:enabled="false"
-            android:text="@string/button_add" />
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/reloadButton"
             android:onClick="reloadGestures"
+            android:text="@string/button_reload" 
 
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-
-            android:enabled="false"
-            android:text="@string/button_reload" />
+			android:layout_weight="1"
+            style="?android:attr/buttonBarButtonStyle" />
 
     </LinearLayout>
 

@@ -119,7 +119,7 @@ public class SettingsActivity extends ListActivity {
 
     /** Called by onClick */
     public void addGesture(View v) {
-        Intent intent = new Intent(this, CreateGestureActivity.class);
+        Intent intent = new Intent(this, SettingsCreateGestureActivity.class);
         startActivityForResult(intent, REQUEST_NEW_GESTURE);
     }
 

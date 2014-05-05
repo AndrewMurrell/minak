@@ -22,12 +22,12 @@
     
     android:orientation="vertical">
 
+    <!-- The "Name" bar at the top -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:orientation="horizontal">
-    
+    	<!-- The prompt -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,18 +35,19 @@
             
             android:text="@string/prompt_gesture_name"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-        
+        <!-- The input -->
         <EditText
             android:id="@+id/gesture_name"
             android:layout_width="0dip"
             android:layout_weight="1.0"
             android:layout_height="wrap_content"
+            android:inputType="text"
 
             android:maxLength="40"
             android:singleLine="true" />
 
     </LinearLayout>
-    
+    <!-- The gesture input -->
     <android.gesture.GestureOverlayView
         android:id="@+id/gestures_overlay"
         android:layout_width="match_parent"
@@ -54,34 +55,33 @@
         android:layout_weight="1.0"
 
         android:gestureStrokeType="multiple" />
-
+	<!-- The "add" and "cancel" buttons -->
     <LinearLayout
         style="@android:style/ButtonBar"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/done"
-                
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-
-            android:enabled="false"
-
             android:onClick="addGesture"
-            android:text="@string/button_done" />
-    
-        <Button
+            android:text="@string/button_done" 
+            
+            android:enabled="false"
+            
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            
+			android:layout_weight="1"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <Button
             android:onClick="cancelGesture"
-            android:text="@string/button_discard" />
+            android:text="@string/button_discard"
+            
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+			android:layout_weight="1"
+            style="?android:attr/buttonBarButtonStyle" />
     
     </LinearLayout>
     
