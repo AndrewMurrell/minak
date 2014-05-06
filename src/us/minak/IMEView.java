@@ -13,14 +13,22 @@
 package us.minak;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Queue;
 
 import android.content.Context;
+import android.gesture.Gesture;
+import android.gesture.GestureLibrary;
+import android.gesture.GestureOverlayView;
+import android.gesture.Prediction;
+import android.gesture.GestureOverlayView.OnGesturePerformedListener;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+
 
 /**
  * Represents the container for the drawing space and the two side panels.
@@ -31,6 +39,28 @@ public class IMEView extends RelativeLayout {
 	private Button mShiftButton;
 	private ShiftState mShiftState = ShiftState.OFF;
 	private final Queue<Character> mSymbolsQueue = new LinkedList<Character>();
+	private float x;
+	private float y;
+	private boolean ongoingGesture = false;
+
+	public List<MetaCircle> circles = new LinkedList<MetaCircle>();
+
+	public boolean setTouchLocation(float x, float y) {
+		if (!ongoingGesture) {
+			this.x = x;
+			this.y = y;
+			return true;
+		}
+		return false;
+	}
+
+	public void setState(boolean state) {
+		ongoingGesture = state;
+	}
+
+	public boolean getState() {
+		return ongoingGesture;
+	}
 
 	private enum ShiftState {
 		OFF, ON, CAPS_LOCK
@@ -61,6 +91,9 @@ public class IMEView extends RelativeLayout {
 		final Button spaceButton = (Button) findViewById(R.id.space_btn);
 		spaceButton.setOnClickListener(mButtonClickListener);
 		spaceButton.setOnLongClickListener(mButtonLongClickListener);
+
+		//dynamic MetaCircle adding stuff here.
+		//
 	}
 
 	public void setOnCharacterEnteredListener(StringReciever onCharacterEnteredListener) {
@@ -119,6 +152,13 @@ public class IMEView extends RelativeLayout {
 		}
 	};
 
+	private final OnTouchListener mOnTouchListener = new OnTouchListener() {
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			return setTouchLocation(event.getX(), event.getY());
+		}	
+	};
+
 	/**
 	 * Changes shift state to the next one (OFF -> ON -> CAPS LOCK).
 	 */
@@ -148,6 +188,7 @@ public class IMEView extends RelativeLayout {
 	 *            The character to enter
 	 */
 	private void enterCharacter(String character) {
+		//for each circle in circles check to see if the touch was in the circle and apply the meta-key
 		switch (mShiftState) {
 		case OFF:
 			mOnCharacterEnteredListener.putString(character);
@@ -163,4 +204,7 @@ public class IMEView extends RelativeLayout {
 			throw new IllegalArgumentException();
 		}
 	}
+
+
+
 }
