@@ -16,11 +16,7 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Queue;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +26,6 @@ import android.widget.RelativeLayout;
  * Represents the container for the drawing space and the two side panels.
  */
 public class IMEView extends RelativeLayout {
-	private final Context mContext;
 	private OnCharacterEnteredListener mOnCharacterEnteredListener;
 	private OnBackspacePressedListener mOnBackspacePressedListener;
 	private Button mShiftButton;
@@ -43,9 +38,6 @@ public class IMEView extends RelativeLayout {
 
 	public IMEView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		mContext = context;
-		LocalBroadcastManager.getInstance(mContext).registerReceiver(mBroadcastReceiver,
-				new IntentFilter(IMESymbolsActivity.INTENT_ACTION));
 	}
 
 	@Override
@@ -57,10 +49,6 @@ public class IMEView extends RelativeLayout {
 				enterCharacter(character);
 			}
 		});
-
-		final Button symbolsButton = (Button) findViewById(R.id.symbols_btn);
-		symbolsButton.setOnClickListener(mButtonClickListener);
-		symbolsButton.setOnLongClickListener(mButtonLongClickListener);
 
 		mShiftButton = (Button) findViewById(R.id.shift_btn);
 		mShiftButton.setOnClickListener(mButtonClickListener);
@@ -88,29 +76,12 @@ public class IMEView extends RelativeLayout {
 	}
 
 	/**
-	 * Receiver for broadcasts coming from the symbols activity.
-	 */
-	private final BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (IMESymbolsActivity.INTENT_ACTION.equals(intent.getAction())) {
-				mSymbolsQueue.add(intent.getCharExtra(IMESymbolsActivity.INTENT_EXTRA_NAME, '?'));
-			}
-		}
-	};
-
-	/**
 	 * Listener handling pressing all buttons.
 	 */
 	private final OnClickListener mButtonClickListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
-			case R.id.symbols_btn:
-				final Intent intent = new Intent(mContext, IMESymbolsActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				mContext.startActivity(intent);
-				break;
 			case R.id.shift_btn:
 				shift();
 				break;
@@ -133,7 +104,6 @@ public class IMEView extends RelativeLayout {
 		@Override
 		public boolean onLongClick(View v) {
 			switch (v.getId()) {
-			case R.id.symbols_btn:
 			case R.id.shift_btn:
 				break;
 			case R.id.backspace_btn:
