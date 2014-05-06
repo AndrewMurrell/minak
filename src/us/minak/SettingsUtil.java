@@ -15,7 +15,7 @@ public class SettingsUtil {
 
 	public static File           getGestureFile(Context context) {
 		if (sGestureFile == null)
-			sGestureFile = new File(context.getExternalFilesDir(null), "gestures.ttf");
+			sGestureFile = new File(context.getExternalFilesDir(null), "gestures");
 		// If the gestures file doesn't exist, copy the default gestures to it
 		if (!sGestureFile.exists()) {
 			try {
