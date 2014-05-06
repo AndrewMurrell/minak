@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="us.minak"
     android:versionCode="1"
@@ -14,17 +15,23 @@
         android:theme="@style/AppTheme" >
 
         <!-- The main input service -->
-        <service android:name="IMEService"
+        <service
+            android:name="IMEService"
             android:label="@string/minak_ime_label"
-            android:permission="android.permission.BIND_INPUT_METHOD">
+            android:permission="android.permission.BIND_INPUT_METHOD" >
             <intent-filter>
                 <action android:name="android.view.InputMethod" />
             </intent-filter>
-            <meta-data android:name="android.view.im" android:resource="@xml/method" />
+
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method" />
         </service>
 
         <!-- The settings menu activity -->
-        <activity android:name=".SettingsActivity" android:label="@string/minak_settings_label">
+        <activity
+            android:name="SettingsActivity"
+            android:label="@string/minak_settings_label" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
@@ -32,7 +39,7 @@
 
         <!-- The individual gesture editor -->
         <activity
-            android:name="CreateGestureActivity"
+            android:name="SettingsCreateGestureActivity"
             android:label="@string/label_create_gesture" />
 
     </application>

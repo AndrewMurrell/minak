@@ -44,253 +44,270 @@ import java.util.HashMap;
 import java.util.Comparator;
 
 public class SettingsActivity extends ListActivity {
-    private static final int STATUS_SUCCESS = 0;
-    private static final int STATUS_CANCELLED = 1;
-    private static final int STATUS_NO_STORAGE = 2;
-    private static final int STATUS_NOT_LOADED = 3;
+	private static final int STATUS_SUCCESS = 0;
+	private static final int STATUS_CANCELLED = 1;
+	private static final int STATUS_NO_STORAGE = 2;
+	private static final int STATUS_NOT_LOADED = 3;
 
-    private static final int MENU_ID_REMOVE = 1;
+	private static final int MENU_ID_REMOVE = 1;
 
-    private static final int REQUEST_NEW_GESTURE = 1;
+	private static final int REQUEST_NEW_GESTURE = 1;
 
-    private final Comparator<NamedGesture> mSorter = new Comparator<NamedGesture>() {
-        public int compare(NamedGesture object1, NamedGesture object2) {
-            return object1.name.compareTo(object2.name);
-        }
-    };
+	private final Comparator<NamedGesture> mSorter = new Comparator<NamedGesture>() {
+		public int compare(NamedGesture object1, NamedGesture object2) {
+			return object1.name.compareTo(object2.name);
+		}
+	};
 
-    private GesturesAdapter mAdapter;
-    private GesturesLoadTask mTask;
-    private TextView mEmptyMessageView;
+	private GesturesAdapter mAdapter;
+	private GesturesLoadTask mTask;
+	private TextView mEmptyMessageView;
 
-    // Hacky constructor to get 'this' out of scope ///////////////////////////
+	// Hacky constructor to get 'this' out of scope ///////////////////////////
 
-    private SettingsActivity mThis;
-    public SettingsActivity() {
-        super();
-        mThis = this;
-    }
+	private SettingsActivity mThis;
 
-    ///////////////////////////////////////////////////////////////////////////
+	public SettingsActivity() {
+		super();
+		mThis = this;
+	}
 
-    private void loadGestures() {
-        if (mTask != null && mTask.getStatus() != GesturesLoadTask.Status.FINISHED) {
-            mTask.cancel(true);
-        }
-        mTask = (GesturesLoadTask) new GesturesLoadTask().execute();
-    }
+	// /////////////////////////////////////////////////////////////////////////
 
-    private void checkForEmpty() {
-        if (mAdapter.getCount() == 0) {
-            mEmptyMessageView.setText(R.string.gestures_empty);
-        }
-    }
+	private void loadGestures() {
+		if (mTask != null
+				&& mTask.getStatus() != GesturesLoadTask.Status.FINISHED) {
+			mTask.cancel(true);
+		}
+		mTask = (GesturesLoadTask) new GesturesLoadTask().execute();
+	}
 
-    // Basic life-cycle ///////////////////////////////////////////////////////
+	private void checkForEmpty() {
+		if (mAdapter.getCount() == 0) {
+			mEmptyMessageView.setText(R.string.gestures_empty);
+		}
+	}
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.gestures_list);
-        setListAdapter(mAdapter = new GesturesAdapter(this));
+	// Basic life-cycle ///////////////////////////////////////////////////////
 
-        mEmptyMessageView = (TextView) findViewById(android.R.id.empty);
-        loadGestures();
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.gestures_list);
+		setListAdapter(mAdapter = new GesturesAdapter(this));
 
-        registerForContextMenu(getListView());
-    }
+		mEmptyMessageView = (TextView) findViewById(android.R.id.empty);
+		loadGestures();
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+		registerForContextMenu(getListView());
+	}
 
-        if (mTask != null && mTask.getStatus() != GesturesLoadTask.Status.FINISHED) {
-            mTask.cancel(true);
-            mTask = null;
-        }
-    }
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
 
-    // The buttons at the bottom //////////////////////////////////////////////
+		if (mTask != null
+				&& mTask.getStatus() != GesturesLoadTask.Status.FINISHED) {
+			mTask.cancel(true);
+			mTask = null;
+		}
+	}
 
-    /** Called by onClick */
-    public void reloadGestures(View v) {
-        loadGestures();
-    }
+	// The buttons at the bottom //////////////////////////////////////////////
 
-    /** Called by onClick */
-    public void addGesture(View v) {
-        Intent intent = new Intent(this, SettingsCreateGestureActivity.class);
-        startActivityForResult(intent, REQUEST_NEW_GESTURE);
-    }
+	/** Called by onClick */
+	public void reloadGestures(View v) {
+		loadGestures();
+	}
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+	/** Called by onClick */
+	public void addGesture(View v) {
+		Intent intent = new Intent(this, SettingsCreateGestureActivity.class);
+		startActivityForResult(intent, REQUEST_NEW_GESTURE);
+	}
 
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_NEW_GESTURE:
-                    loadGestures();
-                    break;
-            }
-        }
-    }
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 
-    // Context menu ///////////////////////////////////////////////////////////
+		if (resultCode == RESULT_OK) {
+			switch (requestCode) {
+			case REQUEST_NEW_GESTURE:
+				loadGestures();
+				break;
+			}
+		}
+	}
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
+	// Context menu ///////////////////////////////////////////////////////////
 
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenu.ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
 
-        menu.setHeaderTitle(((TextView) info.targetView).getText());
-        menu.add(0, MENU_ID_REMOVE, 0, R.string.gestures_delete);
-    }
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        final AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo)
-                item.getMenuInfo();
-        final NamedGesture gesture = (NamedGesture) menuInfo.targetView.getTag();
+		menu.setHeaderTitle(((TextView) info.targetView).getText());
+		menu.add(0, MENU_ID_REMOVE, 0, R.string.gestures_delete);
+	}
 
-        switch (item.getItemId()) {
-            case MENU_ID_REMOVE:
-                SettingsUtil.getGestureLibrary(this).removeGesture(gesture.name, gesture.gesture);
-                SettingsUtil.getGestureLibrary(this).save();
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		final AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item
+				.getMenuInfo();
+		final NamedGesture gesture = (NamedGesture) menuInfo.targetView
+				.getTag();
 
-                mAdapter.setNotifyOnChange(false);
-                mAdapter.remove(gesture);
-                mAdapter.sort(mSorter);
-                checkForEmpty();
-                mAdapter.notifyDataSetChanged();
+		switch (item.getItemId()) {
+		case MENU_ID_REMOVE:
+			SettingsUtil.getGestureLibrary(this).removeGesture(gesture.name,
+					gesture.gesture);
+			SettingsUtil.getGestureLibrary(this).save();
 
-                Toast.makeText(this, R.string.gestures_delete_success, Toast.LENGTH_SHORT).show();
-                return true;
-        }
+			mAdapter.setNotifyOnChange(false);
+			mAdapter.remove(gesture);
+			mAdapter.sort(mSorter);
+			checkForEmpty();
+			mAdapter.notifyDataSetChanged();
 
-        return super.onContextItemSelected(item);
-    }
+			Toast.makeText(this, R.string.gestures_delete_success,
+					Toast.LENGTH_SHORT).show();
+			return true;
+		}
 
-    ///////////////////////////////////////////////////////////////////////////
+		return super.onContextItemSelected(item);
+	}
 
-    private class GesturesLoadTask extends AsyncTask<Void, NamedGesture, Integer> {
-        private int mThumbnailSize;
-        private int mThumbnailInset;
-        private int mPathColor;
+	// /////////////////////////////////////////////////////////////////////////
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+	private class GesturesLoadTask extends
+			AsyncTask<Void, NamedGesture, Integer> {
+		private int mThumbnailSize;
+		private int mThumbnailInset;
+		private int mPathColor;
 
-            final Resources resources = getResources();
-            mPathColor = resources.getColor(R.color.gesture_color);
-            mThumbnailInset = (int) resources.getDimension(R.dimen.gesture_thumbnail_inset);
-            mThumbnailSize = (int) resources.getDimension(R.dimen.gesture_thumbnail_size);
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
 
-            findViewById(R.id.addButton).setEnabled(false);
-            findViewById(R.id.reloadButton).setEnabled(false);
+			final Resources resources = getResources();
+			mPathColor = resources.getColor(R.color.gesture_color);
+			mThumbnailInset = (int) resources
+					.getDimension(R.dimen.gesture_thumbnail_inset);
+			mThumbnailSize = (int) resources
+					.getDimension(R.dimen.gesture_thumbnail_size);
 
-            mAdapter.setNotifyOnChange(false);
-            mAdapter.clear();
-        }
+			findViewById(R.id.addButton).setEnabled(false);
+			findViewById(R.id.reloadButton).setEnabled(false);
 
-        @Override
-        protected Integer doInBackground(Void... params) {
-            if (isCancelled()) return STATUS_CANCELLED;
-            if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-                return STATUS_NO_STORAGE;
-            }
+			mAdapter.setNotifyOnChange(false);
+			mAdapter.clear();
+		}
 
-            final GestureLibrary store = SettingsUtil.getGestureLibrary(mThis);
+		@Override
+		protected Integer doInBackground(Void... params) {
+			if (isCancelled())
+				return STATUS_CANCELLED;
+			if (!Environment.MEDIA_MOUNTED.equals(Environment
+					.getExternalStorageState())) {
+				return STATUS_NO_STORAGE;
+			}
 
-            if (store.load()) {
-                for (String name : store.getGestureEntries()) {
-                    if (isCancelled()) break;
+			final GestureLibrary store = SettingsUtil.getGestureLibrary(mThis);
 
-                    for (Gesture gesture : store.getGestures(name)) {
-                        final Bitmap bitmap = gesture.toBitmap(mThumbnailSize, mThumbnailSize,
-                                mThumbnailInset, mPathColor);
-                        final NamedGesture namedGesture = new NamedGesture();
-                        namedGesture.gesture = gesture;
-                        namedGesture.name = name;
+			if (store.load()) {
+				for (String name : store.getGestureEntries()) {
+					if (isCancelled())
+						break;
 
-                        mAdapter.addBitmap(namedGesture.gesture.getID(), bitmap);
-                        publishProgress(namedGesture);
-                    }
-                }
+					for (Gesture gesture : store.getGestures(name)) {
+						final Bitmap bitmap = gesture.toBitmap(mThumbnailSize,
+								mThumbnailSize, mThumbnailInset, mPathColor);
+						final NamedGesture namedGesture = new NamedGesture();
+						namedGesture.gesture = gesture;
+						namedGesture.name = name;
 
-                return STATUS_SUCCESS;
-            }
+						mAdapter.addBitmap(namedGesture.gesture.getID(), bitmap);
+						publishProgress(namedGesture);
+					}
+				}
 
-            return STATUS_NOT_LOADED;
-        }
+				return STATUS_SUCCESS;
+			}
 
-        @Override
-        protected void onProgressUpdate(NamedGesture... values) {
-            super.onProgressUpdate(values);
+			return STATUS_NOT_LOADED;
+		}
 
-            final GesturesAdapter adapter = mAdapter;
-            adapter.setNotifyOnChange(false);
+		@Override
+		protected void onProgressUpdate(NamedGesture... values) {
+			super.onProgressUpdate(values);
 
-            for (NamedGesture gesture : values) {
-                adapter.add(gesture);
-            }
+			final GesturesAdapter adapter = mAdapter;
+			adapter.setNotifyOnChange(false);
 
-            adapter.sort(mSorter);
-            adapter.notifyDataSetChanged();
-        }
+			for (NamedGesture gesture : values) {
+				adapter.add(gesture);
+			}
 
-        @Override
-        protected void onPostExecute(Integer result) {
-            super.onPostExecute(result);
+			adapter.sort(mSorter);
+			adapter.notifyDataSetChanged();
+		}
 
-            if (result == STATUS_NO_STORAGE) {
-                getListView().setVisibility(View.GONE);
-                mEmptyMessageView.setVisibility(View.VISIBLE);
-                mEmptyMessageView.setText(getString(R.string.gestures_error_loading, SettingsUtil.getGestureFile(mThis).getAbsolutePath()));
-            } else {
-                findViewById(R.id.addButton).setEnabled(true);
-                findViewById(R.id.reloadButton).setEnabled(true);
-                checkForEmpty();
-            }
-        }
-    }
+		@Override
+		protected void onPostExecute(Integer result) {
+			super.onPostExecute(result);
 
-    static class NamedGesture {
-        String name;
-        Gesture gesture;
-    }
+			if (result == STATUS_NO_STORAGE) {
+				getListView().setVisibility(View.GONE);
+				mEmptyMessageView.setVisibility(View.VISIBLE);
+				mEmptyMessageView.setText(getString(
+						R.string.gestures_error_loading, SettingsUtil
+								.getGestureFile(mThis).getAbsolutePath()));
+			} else {
+				findViewById(R.id.addButton).setEnabled(true);
+				findViewById(R.id.reloadButton).setEnabled(true);
+				checkForEmpty();
+			}
+		}
+	}
 
-    private class GesturesAdapter extends ArrayAdapter<NamedGesture> {
-        private final LayoutInflater mInflater;
-        private final Map<Long, Drawable> mThumbnails = Collections.synchronizedMap(
-                new HashMap<Long, Drawable>());
+	static class NamedGesture {
+		String name;
+		Gesture gesture;
+	}
 
-        public GesturesAdapter(Context context) {
-            super(context, 0);
-            mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
+	private class GesturesAdapter extends ArrayAdapter<NamedGesture> {
+		private final LayoutInflater mInflater;
+		private final Map<Long, Drawable> mThumbnails = Collections
+				.synchronizedMap(new HashMap<Long, Drawable>());
 
-        void addBitmap(Long id, Bitmap bitmap) {
-            mThumbnails.put(id, new BitmapDrawable(getResources(), bitmap));
-        }
+		public GesturesAdapter(Context context) {
+			super(context, 0);
+			mInflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = mInflater.inflate(R.layout.gestures_item, parent, false);
-            }
+		void addBitmap(Long id, Bitmap bitmap) {
+			mThumbnails.put(id, new BitmapDrawable(getResources(), bitmap));
+		}
 
-            final NamedGesture gesture = getItem(position);
-            final TextView label = (TextView) convertView;
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if (convertView == null) {
+				convertView = mInflater.inflate(R.layout.gestures_item, parent,
+						false);
+			}
 
-            label.setTag(gesture);
-            label.setText(gesture.name);
-            label.setCompoundDrawablesWithIntrinsicBounds(mThumbnails.get(gesture.gesture.getID()),
-                    null, null, null);
+			final NamedGesture gesture = getItem(position);
+			final TextView label = (TextView) convertView;
 
-            return convertView;
-        }
-    }
+			label.setTag(gesture);
+			label.setText(gesture.name);
+			label.setCompoundDrawablesWithIntrinsicBounds(
+					mThumbnails.get(gesture.gesture.getID()), null, null, null);
+
+			return convertView;
+		}
+	}
 }
