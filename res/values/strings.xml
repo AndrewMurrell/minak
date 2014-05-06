@@ -36,4 +36,9 @@
     <!-- Message, displayed when the sdcard cannot be found, 1st parameter is the name of the file that stores the gestures.  CHAR LIMIT=80 -->
     <string name="gestures_error_loading">Could not load %s. Make sure you have storage available.</string>
 
+    <!-- Temporary labels for buttons -->
+    <string name="button_shift">Shift</string>
+    <string name="button_backspace">Backspace</string>
+    <string name="button_space">Space</string>
+
 </resources>

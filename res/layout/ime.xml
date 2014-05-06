@@ -12,6 +12,7 @@
 
         <Button
             android:id="@+id/shift_btn"
+            android:text="@string/button_shift"
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_marginBottom="10dp"
@@ -43,6 +44,7 @@
 
         <Button
             android:id="@+id/backspace_btn"
+            android:text="@string/button_backspace"
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_marginBottom="5dp"
@@ -50,6 +52,7 @@
 
         <Button
             android:id="@+id/space_btn"
+            android:text="@string/button_space"
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_marginBottom="10dp"
