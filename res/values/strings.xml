@@ -2,8 +2,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <string name="app_name">Minak</string>
-    <string name="minak_ime_label">Minak IME Label</string>
-    <string name="minak_settings_label">Minak Settings Label</string>
+    <string name="minak_ime_label">Minak</string>
+    <string name="minak_settings_label">Minak Settings</string>
 
     <!-- Title, name of the activity used to create a gesture -->
     <string name="label_create_gesture">Create a gesture</string>
