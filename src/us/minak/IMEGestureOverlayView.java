@@ -28,7 +28,7 @@ import android.util.AttributeSet;
 public class IMEGestureOverlayView extends GestureOverlayView implements OnGesturePerformedListener {
 	private static final double SCORE_TRESHOLD = 3.0;
 	private final GestureLibrary mGestureLibrary;
-	private StringReciever mOutput;
+	private OnGestureRecognizedListener mOnGestureRecognizedListener;
 
 	public IMEGestureOverlayView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -37,8 +37,8 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 		addOnGesturePerformedListener(this);
 	}
 
-	public void setOutput(StringReciever output) {
-		mOutput = output;
+	public void setOnGestureRecognizedListener(OnGestureRecognizedListener onGestureRecognizedListener) {
+		mOnGestureRecognizedListener = onGestureRecognizedListener;
 	}
 
 	@Override
@@ -48,9 +48,9 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 		if (!predictions.isEmpty()) {
 			bestPrediction = predictions.get(0);
 		}
-		if (mOutput != null && bestPrediction != null) {
+		if (mOnGestureRecognizedListener != null && bestPrediction != null) {
 			if (bestPrediction.score > SCORE_TRESHOLD) {
-				mOutput.putString(bestPrediction.name);
+				mOnGestureRecognizedListener.gestureRecognized(bestPrediction.name);
 			} else {
 				clear(false);
 			}

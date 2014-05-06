@@ -42,6 +42,13 @@
             android:name="SettingsCreateGestureActivity"
             android:label="@string/label_create_gesture" />
 
+        <!-- The insert-symbol dialog from Penboard -->
+        <activity
+            android:name="IMESymbolsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
     </application>
 
 </manifest>
