@@ -28,9 +28,9 @@ public class IMEService extends InputMethodService {
 	public View onCreateInputView() {
 		final IMEView penboardView = (IMEView) getLayoutInflater().inflate(R.layout.ime, null);
 
-		penboardView.setOnCharacterEnteredListener(new OnCharacterEnteredListener() {
+		penboardView.setOnCharacterEnteredListener(new StringReciever() {
 			@Override
-			public void characterEntered(String character) {
+			public void putString(String character) {
 				getCurrentInputConnection().commitText(character, 1);
 			}
 		});

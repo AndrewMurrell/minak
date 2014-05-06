@@ -26,7 +26,7 @@ import android.widget.RelativeLayout;
  * Represents the container for the drawing space and the two side panels.
  */
 public class IMEView extends RelativeLayout {
-	private OnCharacterEnteredListener mOnCharacterEnteredListener;
+	private StringReciever mOnCharacterEnteredListener;
 	private OnBackspacePressedListener mOnBackspacePressedListener;
 	private Button mShiftButton;
 	private ShiftState mShiftState = ShiftState.OFF;
@@ -43,9 +43,9 @@ public class IMEView extends RelativeLayout {
 	@Override
 	protected void onFinishInflate() {
 		IMEGestureOverlayView drawingSpaceView = (IMEGestureOverlayView) findViewById(R.id.drawing_space);
-		drawingSpaceView.setOnGestureRecognizedListener(new OnGestureRecognizedListener() {
+		drawingSpaceView.setOnGestureRecognizedListener(new StringReciever() {
 			@Override
-			public void gestureRecognized(String character) {
+			public void putString(String character) {
 				enterCharacter(character);
 			}
 		});
@@ -63,7 +63,7 @@ public class IMEView extends RelativeLayout {
 		spaceButton.setOnLongClickListener(mButtonLongClickListener);
 	}
 
-	public void setOnCharacterEnteredListener(OnCharacterEnteredListener onCharacterEnteredListener) {
+	public void setOnCharacterEnteredListener(StringReciever onCharacterEnteredListener) {
 		mOnCharacterEnteredListener = onCharacterEnteredListener;
 	}
 
@@ -89,7 +89,7 @@ public class IMEView extends RelativeLayout {
 				mOnBackspacePressedListener.backspacePressed(false);
 				break;
 			case R.id.space_btn:
-				mOnCharacterEnteredListener.characterEntered(" ");
+				mOnCharacterEnteredListener.putString(" ");
 				break;
 			default:
 				throw new IllegalArgumentException();
@@ -150,14 +150,14 @@ public class IMEView extends RelativeLayout {
 	private void enterCharacter(String character) {
 		switch (mShiftState) {
 		case OFF:
-			mOnCharacterEnteredListener.characterEntered(character);
+			mOnCharacterEnteredListener.putString(character);
 			break;
 		case ON:
-			mOnCharacterEnteredListener.characterEntered(character.toUpperCase(Locale.ENGLISH));
+			mOnCharacterEnteredListener.putString(character.toUpperCase(Locale.ENGLISH));
 			shift();
 			break;
 		case CAPS_LOCK:
-			mOnCharacterEnteredListener.characterEntered(character.toUpperCase(Locale.ENGLISH));
+			mOnCharacterEnteredListener.putString(character.toUpperCase(Locale.ENGLISH));
 			break;
 		default:
 			throw new IllegalArgumentException();
