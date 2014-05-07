@@ -147,12 +147,12 @@ public class IMEView extends RelativeLayout {
 		}
 	};
 
-	/*private final OnTouchListener mOnTouchListener = new OnTouchListener() {
+	private final OnTouchListener mOnTouchListener = new OnTouchListener() {
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			return setTouchLocation(event.getX(), event.getY());
 		}	
-	};*/
+	};
 
 	/**
 	 * Changes shift state to the next one (OFF -> ON -> CAPS LOCK).
