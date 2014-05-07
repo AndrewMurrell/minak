@@ -20,7 +20,6 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 
 /**
@@ -95,12 +94,11 @@ public class IMEView extends RelativeLayout {
 	private void enterCharacter(String character) {
 		for (MetaCircle circle : ((IMEGestureOverlayView) findViewById(R.id.drawing_space)).circles) {
 			//go through circles and check if they are applicable
-			if (circle.containsPoint(this.x, this.y) && circle.getMetaExpression().state != MetaExpression.State.ON) {
+			if (circle.containsPoint(this.x, this.y) && circle.getMetaExpression().state != MetaExpression.State.OFF) {
 				//TODO: apply the Meta-key here
 				;
 			}
 		}
-
 		mOnCharacterEnteredListener.putString(character);
 	}
 }
