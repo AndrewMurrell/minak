@@ -10,9 +10,9 @@ import java.util.List;
 public class IMEModifiers {
 	// FIXME: hard-coded configuration
 	private final IMEModifier[] modifiers = {
-		new IMEModifier("Shift", KeyEvent.KEYCODE_SHIFT_LEFT),
-		new IMEModifier("Ctrl" , KeyEvent.KEYCODE_CTRL_LEFT ),
-		new IMEModifier("Alt"  , KeyEvent.KEYCODE_ALT_LEFT  )};
+		new IMEModifier("Shift", KeyEvent.KEYCODE_SHIFT_LEFT, KeyEvent.META_SHIFT_ON),
+		new IMEModifier("Ctrl" , KeyEvent.KEYCODE_CTRL_LEFT , KeyEvent.META_CTRL_ON ),
+		new IMEModifier("Alt"  , KeyEvent.KEYCODE_ALT_LEFT  , KeyEvent.META_ALT_ON  )};
 
 	// Static drawing resources
 	private final Paint colorPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

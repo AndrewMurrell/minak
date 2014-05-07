@@ -9,6 +9,7 @@ import android.gesture.Prediction;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.KeyCharacterMap;
 import android.view.MotionEvent;
 import android.view.inputmethod.InputConnection;
 
@@ -19,7 +20,12 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 	private final GestureLibrary mGestureLibrary;
 	private InputConnectionGetter icGetter = new InputConnectionGetter.NullGetter();
 	private final IMEModifiers modifiers = new IMEModifiers();
+	private final KeyCharacterMap charMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD);
 	float x = -1, y = -1;
+	int meta = 0;
+
+	// cache for repeated calls
+	InputConnection ic = null;
 
 	public IMEGestureOverlayView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -30,6 +36,18 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 
 	public void setInputConnectionGetter(InputConnectionGetter icGetter) {
 		this.icGetter = icGetter;
+	}
+
+	private void sendKeyEvent(KeyEvent keyEvent) {
+		if (ic != null) {
+			ic.sendKeyEvent(new KeyEvent(
+					keyEvent.getDownTime(),
+					keyEvent.getEventTime(),
+					keyEvent.getAction(),
+					keyEvent.getKeyCode(),
+					keyEvent.getRepeatCount(),
+					keyEvent.getMetaState() | meta));
+		}
 	}
 
 	/**
@@ -44,20 +62,22 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 			bestPrediction = predictions.get(0);
 		}
 
-		InputConnection ic = icGetter.getCurrentInputConnection();
+		ic = icGetter.getCurrentInputConnection();
 		if (ic != null) {
 			if (bestPrediction != null) {
 				if (bestPrediction.score > SCORE_TRESHOLD) {
-					ic.commitText(bestPrediction.name, 1);
+					for (KeyEvent keyEvent : charMap.getEvents(bestPrediction.name.toCharArray()))
+						sendKeyEvent(keyEvent);
 				} else {
 					clear(false);
 				}
 			}
 			for (IMEModifier modifier : modifiers.getSelection()) {
-				ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, modifier.keycode));
+				sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, modifier.keycode));
 			}
 		}
 		modifiers.clearSelection();
+		meta = 0;
 		invalidate();
 		x = y = -1;
 	}
@@ -76,10 +96,11 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 			modifiers.setSelectionPoint(x, y);
 			invalidate();
 
-			InputConnection ic = icGetter.getCurrentInputConnection();
+			ic = icGetter.getCurrentInputConnection();
 			if (ic != null) {
 				for (IMEModifier modifier : modifiers.getSelection()) {
-					ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, modifier.keycode));
+					sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, modifier.keycode));
+					meta |= modifier.metamask;
 				}
 				return true;
 			}
