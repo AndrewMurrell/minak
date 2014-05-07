@@ -16,18 +16,10 @@
 
 package us.minak;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.FileEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -90,23 +82,15 @@ public class SettingsActivity extends ListActivity {
 		mTask = (GesturesLoadTask) new GesturesLoadTask().execute();
 	}
 
-	public void uploadGesture() {
+	public void uploadGestures() {
 	    // Create a new HttpClient and Post Header
-	    HttpClient httpclient = new DefaultHttpClient();
-	    HttpPost httppost = new HttpPost("https://lukeshu.com/minak-server");
+		   PostTask task = new PostTask();
+		   task.setActivity(this);
+		   task.execute("https://lukeshu.com/minak-server");
+	}
 
-	    try {
-	    //FileInputStream stream = new FileInputStream(SettingsUtil.getGestureFile(this));
-	        httppost.setEntity(new FileEntity(SettingsUtil.getGestureFile(this), "application/octet-stream"));
-	        HttpResponse response = httpclient.execute(httppost);
-
-			Toast toast = Toast.makeText(this, response.toString(), Toast.LENGTH_LONG);
-			toast.show();
-	    } catch (ClientProtocolException e) {
-	        // TODO Auto-generated catch block
-	    } catch (IOException e) {
-	        // TODO Auto-generated catch block
-	    }
+	public void uploadGestures(View view) {
+		uploadGestures();
 	}
 
 	private void checkForEmpty() {
@@ -116,14 +100,6 @@ public class SettingsActivity extends ListActivity {
 	}
 
 	// Basic life-cycle ///////////////////////////////////////////////////////
-
-	
-	public void postGesture(){
-		
-		
-	}
-	
-	///////////////////////////////
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
