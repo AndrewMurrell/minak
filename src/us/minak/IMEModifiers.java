@@ -25,13 +25,15 @@ public class IMEModifiers {
 	public void draw(Canvas canvas, float cx, float cy, float r) {
 		this.cx = cx;
 		this.cy = cy;
-		innerR = r*(1.0/3.0);
-		outerR = (float)(r*(2.0/3.0));
+		innerR = r*(1.2/3.0);
+		outerR = r*(1.8/3.0);
 		radEach = (Math.PI*2.0)/modifiers.length;
-		
+
+		double textR = r*.8;
+
 		double rad = 0;
 		float[] hsv = {0F, 1F, .75F};
-		
+
 		for (int i = 0; i < modifiers.length; i++) {
 			rad = radEach * i;
 			hsv[0] = (float)Math.toDegrees(rad);
@@ -44,8 +46,8 @@ public class IMEModifiers {
 					colorPaint);
 			canvas.drawText(
 					modifiers[i],
-					(float)(cx+innerR*Math.cos(rad)),
-					(float)(cy+innerR*Math.sin(rad)),
+					(float)(cx+textR*Math.cos(rad)),
+					(float)(cy+textR*Math.sin(rad)),
 					textPaint);
 		}		
 	}

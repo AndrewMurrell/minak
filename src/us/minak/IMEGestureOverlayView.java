@@ -64,6 +64,6 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 	@Override
 	public void onDraw(Canvas canvas) {
 		float d = Math.min(canvas.getWidth(), canvas.getHeight());
-		modifiers.draw(canvas, d/2, d/2, d*.4F);
+		modifiers.draw(canvas, d/2, d/2, d*.47F);
 	}
 }
