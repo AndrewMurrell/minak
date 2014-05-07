@@ -13,7 +13,8 @@
         android:fadeDuration="300"
         android:fadeEnabled="true"
         android:fadeOffset="200"
-        android:gestureColor="#000"
+
+        android:gestureColor="@color/gesture_color"
         android:gestureStrokeAngleThreshold="0.0"
         android:gestureStrokeLengthThreshold="0.0"
         android:gestureStrokeSquarenessThreshold="0.0"
