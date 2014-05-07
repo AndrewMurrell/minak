@@ -1,24 +1,13 @@
 package us.minak;
 
 public class IMEModifier {
-	public static enum State {
-		ON, OFF, LOCK
-	}
+	public final String name;
+	public final int keycode;
+	public final int metamask;
 
-	public State state;
-	private String value;
-
-	public String getValue() {
-		//however we want to do return this
-		return this.value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	IMEModifier(String value) {
-		this.value = value;
-		this.state = State.OFF;
+	public IMEModifier(String name, int keycode, int metamask) {
+		this.name = name;
+		this.keycode = keycode;
+		this.metamask = metamask;
 	}
 }
