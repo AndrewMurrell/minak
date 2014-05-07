@@ -13,8 +13,6 @@
 package us.minak;
 
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
 import java.util.Queue;
 
 import android.content.Context;
@@ -184,20 +182,12 @@ public class IMEView extends RelativeLayout {
 	 *            The character to enter
 	 */
 	private void enterCharacter(String character) {
-		//for each circle in circles check to see if the touch was in the circle and apply the meta-key
-		switch (mShiftState) {
-		case OFF:
-			mOnCharacterEnteredListener.putString(character);
-			break;
-		case ON:
-			mOnCharacterEnteredListener.putString(character.toUpperCase(Locale.ENGLISH));
-			shift();
-			break;
-		case CAPS_LOCK:
-			mOnCharacterEnteredListener.putString(character.toUpperCase(Locale.ENGLISH));
-			break;
-		default:
-			throw new IllegalArgumentException();
+		for (MetaCircle circle : ((IMEGestureOverlayView) findViewById(R.id.drawing_space)).circles) {
+			//go through circles and check if they are applicable
+			if (circle.containsPoint(this.x, this.y) && circle.getMetaExpression().state != MetaExpression.State.ON) {
+				//TODO: apply the Meta-key here
+				;
+			}
 		}
 	}
 }
