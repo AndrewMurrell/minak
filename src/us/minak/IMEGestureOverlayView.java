@@ -21,6 +21,7 @@ import android.gesture.GestureLibrary;
 import android.gesture.GestureOverlayView;
 import android.gesture.GestureOverlayView.OnGesturePerformedListener;
 import android.gesture.Prediction;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 
 /**
@@ -58,6 +59,10 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 				drawCircles((MetaCircle[]) this.circles.toArray());
 			}
 		}
+	}
+	
+	public void onDraw(Canvas canvas) {
+		canvas.getHeight();
 	}
 
 	public void drawCircles (MetaCircle[] circles) {
