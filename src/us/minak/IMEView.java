@@ -16,7 +16,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -56,18 +55,13 @@ public class IMEView extends RelativeLayout {
 
 	@Override
 	protected void onFinishInflate() {
-		IMEGestureOverlayView drawingSpaceView = (IMEGestureOverlayView) findViewById(R.id.drawing_space);
-		drawingSpaceView.setOnGestureRecognizedListener(new StringReciever() {
+		IMEGestureOverlayView gestureOverlayView = (IMEGestureOverlayView) findViewById(R.id.drawing_space);
+		gestureOverlayView.setOnGestureRecognizedListener(new StringReciever() {
 			@Override
 			public void putString(String character) {
 				enterCharacter(character);
 			}
 		});
-
-		//dynamic MetaCircle adding stuff here. replace null with Shift or Ctrl or Meta or Alt or Hyper or whatever.
-		drawingSpaceView.circles.add(new MetaCircle((float)50.0, (float)50.0, (float)20.0, Color.RED, new MetaExpression(null)));
-		drawingSpaceView.circles.add(new MetaCircle((float)70.0, (float)70.0, (float)20.0, Color.RED, new MetaExpression(null)));
-		drawingSpaceView.circles.add(new MetaCircle((float)50.0, (float)30.0, (float)20.0, Color.RED, new MetaExpression(null)));
 	}
 
 	public void setOnCharacterEnteredListener(StringReciever onCharacterEnteredListener) {
@@ -92,6 +86,7 @@ public class IMEView extends RelativeLayout {
 	 *            The character to enter
 	 */
 	private void enterCharacter(String character) {
+		/*
 		for (MetaCircle circle : ((IMEGestureOverlayView) findViewById(R.id.drawing_space)).circles) {
 			//go through circles and check if they are applicable
 			if (circle.containsPoint(this.x, this.y) && circle.getMetaExpression().state != MetaExpression.State.OFF) {
@@ -99,6 +94,7 @@ public class IMEView extends RelativeLayout {
 				;
 			}
 		}
+		*/
 		mOnCharacterEnteredListener.putString(character);
 	}
 }
