@@ -13,10 +13,16 @@
 package us.minak;
 
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Queue;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 /**
@@ -25,6 +31,27 @@ import android.widget.RelativeLayout;
 public class IMEView extends RelativeLayout {
 	private StringReciever mOnCharacterEnteredListener;
 	private final Queue<Character> mSymbolsQueue = new LinkedList<Character>();
+
+	private float x;
+	private float y;
+	private boolean ongoingGesture = false;
+
+	public boolean setTouchLocation(float x, float y) {
+		if (!ongoingGesture) {
+			this.x = x;
+			this.y = y;
+			return true;
+		}
+		return false;
+	}
+
+	public void setState(boolean state) {
+		ongoingGesture = state;
+	}
+
+	public boolean getState() {
+		return ongoingGesture;
+	}
 
 	public IMEView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -39,6 +66,11 @@ public class IMEView extends RelativeLayout {
 				enterCharacter(character);
 			}
 		});
+
+		//dynamic MetaCircle adding stuff here. replace null with Shift or Ctrl or Meta or Alt or Hyper or whatever.
+		drawingSpaceView.circles.add(new MetaCircle((float)50.0, (float)50.0, (float)20.0, Color.RED, new MetaExpression(null)));
+		drawingSpaceView.circles.add(new MetaCircle((float)70.0, (float)70.0, (float)20.0, Color.RED, new MetaExpression(null)));
+		drawingSpaceView.circles.add(new MetaCircle((float)50.0, (float)30.0, (float)20.0, Color.RED, new MetaExpression(null)));
 	}
 
 	public void setOnCharacterEnteredListener(StringReciever onCharacterEnteredListener) {
@@ -48,6 +80,13 @@ public class IMEView extends RelativeLayout {
 	public Queue<Character> getSymbolsQueue() {
 		return mSymbolsQueue;
 	}
+
+	private final OnTouchListener mOnTouchListener = new OnTouchListener() {
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			return setTouchLocation(event.getX(), event.getY());
+		}	
+	};
 
 	/**
 	 * Passes the given character to the input service.

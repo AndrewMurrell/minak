@@ -12,6 +12,7 @@
 
 package us.minak;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import android.content.Context;
@@ -21,7 +22,6 @@ import android.gesture.GestureOverlayView;
 import android.gesture.GestureOverlayView.OnGesturePerformedListener;
 import android.gesture.Prediction;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 
@@ -32,6 +32,8 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 	private static final double SCORE_TRESHOLD = 3.0;
 	private final GestureLibrary mGestureLibrary;
 	private StringReciever mOnGestureRecognizedListener;
+	public List<MetaCircle> circles = new LinkedList<MetaCircle>();
+	private final Paint mPaint = new Paint();
 
 	public IMEGestureOverlayView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -61,6 +63,9 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 	}
 
 	public void onDraw(Canvas canvas) {
-		// TODO: put things here
+		for (MetaCircle circle : circles) {
+			mPaint.setColor(circle.color);
+			canvas.drawCircle(circle.x, circle.y, circle.radius, mPaint);
+		}
 	}
 }

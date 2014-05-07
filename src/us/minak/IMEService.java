@@ -22,27 +22,27 @@ import android.view.inputmethod.EditorInfo;
  * Represent the application input service.
  */
 public class IMEService extends InputMethodService {
-	private IMEView mPenboardView;
+	private IMEView mIMEView;
 
 	@Override
 	public View onCreateInputView() {
-		final IMEView penboardView = (IMEView) getLayoutInflater().inflate(R.layout.ime, null);
+		final IMEView minakView = (IMEView) getLayoutInflater().inflate(R.layout.ime, null);
 
-		penboardView.setOnCharacterEnteredListener(new StringReciever() {
+		minakView.setOnCharacterEnteredListener(new StringReciever() {
 			@Override
 			public void putString(String character) {
 				getCurrentInputConnection().commitText(character, 1);
 			}
 		});
 
-		mPenboardView = penboardView;
-		return penboardView;
+		mIMEView = minakView;
+		return minakView;
 	}
 
 	@Override
 	public void onStartInput(EditorInfo attribute, boolean restarting) {
-		if (mPenboardView != null) {
-			final Queue<Character> symbolsQueue = mPenboardView.getSymbolsQueue();
+		if (mIMEView != null) {
+			final Queue<Character> symbolsQueue = mIMEView.getSymbolsQueue();
 			while (!symbolsQueue.isEmpty()) {
 				final Character character = symbolsQueue.poll();
 				getCurrentInputConnection().commitText(String.valueOf(character), 1);
