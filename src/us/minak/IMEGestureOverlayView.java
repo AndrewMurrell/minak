@@ -12,6 +12,7 @@
 
 package us.minak;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import android.content.Context;
@@ -21,7 +22,6 @@ import android.gesture.GestureOverlayView;
 import android.gesture.GestureOverlayView.OnGesturePerformedListener;
 import android.gesture.Prediction;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 
@@ -32,6 +32,7 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 	private static final double SCORE_TRESHOLD = 3.0;
 	private final GestureLibrary mGestureLibrary;
 	private StringReciever mOnGestureRecognizedListener;
+	public List<MetaCircle> circles = new LinkedList<MetaCircle>();
 
 	public IMEGestureOverlayView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -59,19 +60,12 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 			}
 		}
 	}
-	private final Paint mPaintRed = new Paint();
-	private final Paint mPaintBlue = new Paint();
+
 	public void onDraw(Canvas canvas) {
-		mPaintRed.setColor(Color.RED);
-		mPaintBlue.setColor(Color.BLUE);
-		canvas.drawCircle(
-				0F/*(float)(canvas.getWidth()/2.0)*/,
-				0F/*(float)(canvas.getHeight()/2.0)*/,
-				10F,
-				mPaintRed);
-		canvas.drawLine(0, 0,
-				canvas.getWidth(),
-				canvas.getHeight(),
-				mPaintBlue);
+		for (MetaCircle circle : circles) {
+			final Paint p = new Paint();
+			p.setColor(circle.color);
+			canvas.drawCircle(circle.x, circle.y, circle.radius, p);
+		}
 	}
 }
