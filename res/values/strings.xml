@@ -38,5 +38,6 @@
 
     <!-- Labels for buttons -->
     <string name="button_backspace">&#x2190;</string>
+    <string name="button_upload">Upload</string>
 
 </resources>

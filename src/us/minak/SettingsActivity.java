@@ -90,6 +90,14 @@ public class SettingsActivity extends ListActivity {
 
 	// Basic life-cycle ///////////////////////////////////////////////////////
 
+	
+	public void postGesture(){
+		
+		
+	}
+	
+	///////////////////////////////
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
