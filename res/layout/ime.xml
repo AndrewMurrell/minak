@@ -3,29 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:id="@+id/left_panel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:orientation="vertical" >
-
-        <Button
-            android:id="@+id/shift_btn"
-            android:text="@string/button_shift"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="5dp" />
-    </LinearLayout>
-
     <us.minak.IMEGestureOverlayView
         android:id="@+id/drawing_space"
-        android:layout_width="wrap_content"
+
+        android:layout_width="fill_parent"
         android:layout_height="200dp"
         android:layout_centerInParent="true"
-        android:layout_toLeftOf="@+id/right_panel"
-        android:layout_toRightOf="@+id/left_panel"
+
         android:fadeDuration="300"
         android:fadeEnabled="true"
         android:fadeOffset="200"
@@ -34,29 +18,5 @@
         android:gestureStrokeLengthThreshold="0.0"
         android:gestureStrokeSquarenessThreshold="0.0"
         android:gestureStrokeType="multiple" />
-
-    <LinearLayout
-        android:id="@+id/right_panel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:orientation="vertical" >
-
-        <Button
-            android:id="@+id/backspace_btn"
-            android:text="@string/button_backspace"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="10dp" />
-
-        <Button
-            android:id="@+id/space_btn"
-            android:text="@string/button_space"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="5dp" />
-    </LinearLayout>
 
 </us.minak.IMEView>

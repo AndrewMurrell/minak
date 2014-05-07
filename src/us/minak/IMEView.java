@@ -13,13 +13,10 @@
 package us.minak;
 
 import java.util.LinkedList;
-import java.util.Locale;
 import java.util.Queue;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 
 /**
@@ -27,14 +24,7 @@ import android.widget.RelativeLayout;
  */
 public class IMEView extends RelativeLayout {
 	private StringReciever mOnCharacterEnteredListener;
-	private OnBackspacePressedListener mOnBackspacePressedListener;
-	private Button mShiftButton;
-	private ShiftState mShiftState = ShiftState.OFF;
 	private final Queue<Character> mSymbolsQueue = new LinkedList<Character>();
-
-	private enum ShiftState {
-		OFF, ON, CAPS_LOCK
-	};
 
 	public IMEView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -49,96 +39,14 @@ public class IMEView extends RelativeLayout {
 				enterCharacter(character);
 			}
 		});
-
-		mShiftButton = (Button) findViewById(R.id.shift_btn);
-		mShiftButton.setOnClickListener(mButtonClickListener);
-		mShiftButton.setOnLongClickListener(mButtonLongClickListener);
-
-		final Button backspaceButton = (Button) findViewById(R.id.backspace_btn);
-		backspaceButton.setOnClickListener(mButtonClickListener);
-		backspaceButton.setOnLongClickListener(mButtonLongClickListener);
-
-		final Button spaceButton = (Button) findViewById(R.id.space_btn);
-		spaceButton.setOnClickListener(mButtonClickListener);
-		spaceButton.setOnLongClickListener(mButtonLongClickListener);
 	}
 
 	public void setOnCharacterEnteredListener(StringReciever onCharacterEnteredListener) {
 		mOnCharacterEnteredListener = onCharacterEnteredListener;
 	}
 
-	public void setOnBackspacePressedListener(OnBackspacePressedListener onBackspacePressedListener) {
-		mOnBackspacePressedListener = onBackspacePressedListener;
-	}
-
 	public Queue<Character> getSymbolsQueue() {
 		return mSymbolsQueue;
-	}
-
-	/**
-	 * Listener handling pressing all buttons.
-	 */
-	private final OnClickListener mButtonClickListener = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			switch (v.getId()) {
-			case R.id.shift_btn:
-				shift();
-				break;
-			case R.id.backspace_btn:
-				mOnBackspacePressedListener.backspacePressed(false);
-				break;
-			case R.id.space_btn:
-				mOnCharacterEnteredListener.putString(" ");
-				break;
-			default:
-				throw new IllegalArgumentException();
-			}
-		}
-	};
-
-	/**
-	 * Listener handling long pressing all buttons.
-	 */
-	private final OnLongClickListener mButtonLongClickListener = new OnLongClickListener() {
-		@Override
-		public boolean onLongClick(View v) {
-			switch (v.getId()) {
-			case R.id.shift_btn:
-				break;
-			case R.id.backspace_btn:
-				mOnBackspacePressedListener.backspacePressed(true);
-				return true;
-			case R.id.space_btn:
-				break;
-			default:
-				throw new IllegalArgumentException();
-			}
-
-			return false;
-		}
-	};
-
-	/**
-	 * Changes shift state to the next one (OFF -> ON -> CAPS LOCK).
-	 */
-	private void shift() {
-		switch (mShiftState) {
-		case OFF:
-			mShiftState = ShiftState.ON;
-			//mShiftButton.setBackgroundResource(R.drawable.shift_on);
-			break;
-		case ON:
-			mShiftState = ShiftState.CAPS_LOCK;
-			//mShiftButton.setBackgroundResource(R.drawable.shift_caps_lock);
-			break;
-		case CAPS_LOCK:
-			mShiftState = ShiftState.OFF;
-			//mShiftButton.setBackgroundResource(R.drawable.shift_off);
-			break;
-		default:
-			throw new IllegalArgumentException();
-		}
 	}
 
 	/**
@@ -148,19 +56,6 @@ public class IMEView extends RelativeLayout {
 	 *            The character to enter
 	 */
 	private void enterCharacter(String character) {
-		switch (mShiftState) {
-		case OFF:
-			mOnCharacterEnteredListener.putString(character);
-			break;
-		case ON:
-			mOnCharacterEnteredListener.putString(character.toUpperCase(Locale.ENGLISH));
-			shift();
-			break;
-		case CAPS_LOCK:
-			mOnCharacterEnteredListener.putString(character.toUpperCase(Locale.ENGLISH));
-			break;
-		default:
-			throw new IllegalArgumentException();
-		}
+		mOnCharacterEnteredListener.putString(character);
 	}
 }

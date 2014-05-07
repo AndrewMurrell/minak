@@ -59,19 +59,8 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 			}
 		}
 	}
-	private final Paint mPaintRed = new Paint();
-	private final Paint mPaintBlue = new Paint();
+
 	public void onDraw(Canvas canvas) {
-		mPaintRed.setColor(Color.RED);
-		mPaintBlue.setColor(Color.BLUE);
-		canvas.drawCircle(
-				0F/*(float)(canvas.getWidth()/2.0)*/,
-				0F/*(float)(canvas.getHeight()/2.0)*/,
-				10F,
-				mPaintRed);
-		canvas.drawLine(0, 0,
-				canvas.getWidth(),
-				canvas.getHeight(),
-				mPaintBlue);
+		// TODO: put things here
 	}
 }
