@@ -35,17 +35,6 @@ public class IMEService extends InputMethodService {
 			}
 		});
 
-		minakView.setOnBackspacePressedListener(new OnBackspacePressedListener() {
-			@Override
-			public void backspacePressed(boolean isLongClick) {
-				if (isLongClick) {
-					deleteLastWord();
-				} else {
-					getCurrentInputConnection().deleteSurroundingText(1, 0);
-				}
-			}
-		});
-
 		mIMEView = minakView;
 		return minakView;
 	}
@@ -59,23 +48,5 @@ public class IMEService extends InputMethodService {
 				getCurrentInputConnection().commitText(String.valueOf(character), 1);
 			}
 		}
-	}
-
-	/**
-	 * Deletes one word before the cursor.
-	 */
-	private void deleteLastWord() {
-		final int charactersToGet = 20;
-		final String splitRegexp = " ";
-
-		// delete trailing spaces
-		while (getCurrentInputConnection().getTextBeforeCursor(1, 0).toString().equals(splitRegexp)) {
-			getCurrentInputConnection().deleteSurroundingText(1, 0);
-		}
-
-		// delete last word letters
-		final String[] words = getCurrentInputConnection().getTextBeforeCursor(charactersToGet, 0).toString()
-				.split(splitRegexp);
-		getCurrentInputConnection().deleteSurroundingText(words[words.length - 1].length(), 0);
 	}
 }
