@@ -222,8 +222,7 @@ public class SettingsActivity extends ListActivity {
 						break;
 
 					for (Gesture gesture : store.getGestures(name)) {
-						final Bitmap bitmap = gesture.toBitmap(mThumbnailSize,
-								mThumbnailSize, mThumbnailInset, mPathColor);
+						final Bitmap bitmap = gesture.toBitmap(mThumbnailSize, mThumbnailSize, mThumbnailInset, mPathColor);
 						final NamedGesture namedGesture = new NamedGesture();
 						namedGesture.gesture = gesture;
 						namedGesture.name = name;

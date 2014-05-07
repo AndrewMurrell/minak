@@ -12,6 +12,7 @@
 
 package us.minak;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import android.content.Context;
@@ -29,6 +30,7 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 	private static final double SCORE_TRESHOLD = 3.0;
 	private final GestureLibrary mGestureLibrary;
 	private StringReciever mOnGestureRecognizedListener;
+	public List<MetaCircle> circles = new LinkedList<MetaCircle>();
 
 	public IMEGestureOverlayView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -53,7 +55,15 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 				mOnGestureRecognizedListener.putString(bestPrediction.name);
 			} else {
 				clear(false);
+				drawCircles((MetaCircle[]) this.circles.toArray());
 			}
+		}
+	}
+
+	public void drawCircles (MetaCircle[] circles) {
+		for (MetaCircle circle : circles) {
+			//draw circle
+			;
 		}
 	}
 }
