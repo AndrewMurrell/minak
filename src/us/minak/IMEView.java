@@ -34,6 +34,7 @@ public class IMEView extends RelativeLayout {
 	private Button mShiftButton;
 	private ShiftState mShiftState = ShiftState.OFF;
 	private final Queue<Character> mSymbolsQueue = new LinkedList<Character>();
+/*	
 	private float x;
 	private float y;
 	private boolean ongoingGesture = false;
@@ -54,7 +55,7 @@ public class IMEView extends RelativeLayout {
 	public boolean getState() {
 		return ongoingGesture;
 	}
-
+*/
 	private enum ShiftState {
 		OFF, ON, CAPS_LOCK
 	};
@@ -85,11 +86,11 @@ public class IMEView extends RelativeLayout {
 		spaceButton.setOnClickListener(mButtonClickListener);
 		spaceButton.setOnLongClickListener(mButtonLongClickListener);
 
-		//dynamic MetaCircle adding stuff here. replace null with Shift or Ctrl or Meta or Alt or Hyper or whatever.
+		/*/dynamic MetaCircle adding stuff here. replace null with Shift or Ctrl or Meta or Alt or Hyper or whatever.
 		drawingSpaceView.circles.add(new MetaCircle((float)50.0, (float)50.0, (float)20.0, Color.RED, new MetaExpression(null)));
 		drawingSpaceView.circles.add(new MetaCircle((float)70.0, (float)70.0, (float)20.0, Color.RED, new MetaExpression(null)));
 		drawingSpaceView.circles.add(new MetaCircle((float)50.0, (float)30.0, (float)20.0, Color.RED, new MetaExpression(null)));
-		//
+		/*/
 	}
 
 	public void setOnCharacterEnteredListener(StringReciever onCharacterEnteredListener) {
