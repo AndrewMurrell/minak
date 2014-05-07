@@ -1,7 +1,7 @@
 package us.minak;
 
 public class MetaExpression {
-	public enum State {
+	public static enum State {
 		ON, OFF, LOCK
 	}
 

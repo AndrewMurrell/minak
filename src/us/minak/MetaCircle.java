@@ -5,7 +5,7 @@ package us.minak;
  *
  */
 public class MetaCircle {
-	public MetaExpression metaExpr;
+	private MetaExpression metaExpression;
 	public float x;
 	public float y;
 	public float radius;
@@ -14,7 +14,7 @@ public class MetaCircle {
 	public int expansion; //the level of expansion (if multiple circles are expanded, this decides precidence)
 
 	MetaCircle(float x, float y, float radius, int color, MetaExpression metaExpr) {
-		this.metaExpr = metaExpr;
+		this.setMetaExpression(metaExpr);
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
@@ -25,5 +25,13 @@ public class MetaCircle {
 
 	public boolean containsPoint(float x, float y) {
 		return Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2) < Math.pow(this.radius, 2) ? true : false;
+	}
+
+	public MetaExpression getMetaExpression() {
+		return metaExpression;
+	}
+
+	public void setMetaExpression(MetaExpression metaExpr) {
+		this.metaExpression = metaExpr;
 	}
 }

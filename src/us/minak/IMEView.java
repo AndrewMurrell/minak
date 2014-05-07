@@ -13,8 +13,6 @@
 package us.minak;
 
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
 import java.util.Queue;
 
 import android.content.Context;
@@ -95,6 +93,14 @@ public class IMEView extends RelativeLayout {
 	 *            The character to enter
 	 */
 	private void enterCharacter(String character) {
+		for (MetaCircle circle : ((IMEGestureOverlayView) findViewById(R.id.drawing_space)).circles) {
+			//go through circles and check if they are applicable
+			if (circle.containsPoint(this.x, this.y) && circle.getMetaExpression().state != MetaExpression.State.ON) {
+				//TODO: apply the Meta-key here
+				;
+			}
+		}
+
 		mOnCharacterEnteredListener.putString(character);
 	}
 }
