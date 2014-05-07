@@ -3,20 +3,30 @@ package us.minak;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import java.util.List;
+import android.view.KeyEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 public class IMEModifiers {
-	private final String[] modifiers = { "shift", "ctrl", "alt" };
+	// FIXME: hard-coded configuration
+	private final IMEModifier[] modifiers = {
+		new IMEModifier("Shift", KeyEvent.KEYCODE_SHIFT_LEFT),
+		new IMEModifier("Ctrl" , KeyEvent.KEYCODE_CTRL_LEFT ),
+		new IMEModifier("Alt"  , KeyEvent.KEYCODE_ALT_LEFT  )};
+
+	// Static drawing resources
 	private final Paint colorPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	
+	// Pre-calculated graphics stuff
 	private float cx = 0;
 	private float cy = 0;
 	private double innerR = 0;
 	private double outerR = 0;
 	private double radEach = 0;
 	 
+	// The current state
+	ArrayList<IMEModifier> selected = new ArrayList<IMEModifier>();
 	
 	public IMEModifiers() {
 		textPaint.setColor(Color.BLACK);
@@ -39,21 +49,23 @@ public class IMEModifiers {
 			hsv[0] = (float)Math.toDegrees(rad);
 			colorPaint.setColor(Color.HSVToColor(0x80, hsv));
 		
-			canvas.drawCircle(
-					(float)(cx+innerR*Math.cos(rad)),
-					(float)(cy+innerR*Math.sin(rad)),
-					(float)outerR,
-					colorPaint);
-			canvas.drawText(
-					modifiers[i],
-					(float)(cx+textR*Math.cos(rad)),
-					(float)(cy+textR*Math.sin(rad)),
-					textPaint);
-		}		
+			if (selected.contains(modifiers[i])) {
+				canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), colorPaint);
+			} else {
+				canvas.drawCircle((float)(cx+innerR*Math.cos(rad)),
+				                  (float)(cy+innerR*Math.sin(rad)),
+				                  (float)outerR,
+				                  colorPaint);
+			}
+			canvas.drawText(modifiers[i].name,
+			                (float)(cx+textR*Math.cos(rad)),
+			                (float)(cy+textR*Math.sin(rad)),
+			                textPaint);
+		}
 	}
 	
-	public List<String> getModifiersAtPoint(float x, float y) {
-		ArrayList<String> ret = new ArrayList<String>();
+	public void setSelectionPoint(float x, float y) {
+		selected.clear();
 		
 		double mx;
 		double my;
@@ -63,9 +75,16 @@ public class IMEModifiers {
 			mx = cx+innerR*Math.cos(rad);
 			my = cy+innerR*Math.sin(rad);
 			
-			if (Math.sqrt(Math.pow(mx-x,2)+Math.pow(my-y, 2)) > outerR)
-				ret.add(modifiers[i]);
+			if (Math.sqrt(Math.pow(mx-x,2)+Math.pow(my-y, 2)) < outerR)
+				selected.add(modifiers[i]);
 		}
-		return ret;
+	}
+
+	public List<IMEModifier> getSelection() {
+		return selected;
+	}
+
+	public void clearSelection() {
+		selected.clear();
 	}
 }
