@@ -33,6 +33,7 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 	private final GestureLibrary mGestureLibrary;
 	private StringReciever mOnGestureRecognizedListener;
 	public List<MetaCircle> circles = new LinkedList<MetaCircle>();
+	private final Paint mPaint = new Paint();
 
 	public IMEGestureOverlayView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -63,9 +64,8 @@ public class IMEGestureOverlayView extends GestureOverlayView implements OnGestu
 
 	public void onDraw(Canvas canvas) {
 		for (MetaCircle circle : circles) {
-			final Paint p = new Paint();
-			p.setColor(circle.color);
-			canvas.drawCircle(circle.x, circle.y, circle.radius, p);
+			mPaint.setColor(circle.color);
+			canvas.drawCircle(circle.x, circle.y, circle.radius, mPaint);
 		}
 	}
 }

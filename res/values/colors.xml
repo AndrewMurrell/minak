@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <color name="gesture_color">#FFFFFF00</color>
+    <color name="gesture_color">#CC5B59AB</color>
 </resources>
