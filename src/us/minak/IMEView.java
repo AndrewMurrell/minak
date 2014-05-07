@@ -34,7 +34,7 @@ public class IMEView extends RelativeLayout {
 	private Button mShiftButton;
 	private ShiftState mShiftState = ShiftState.OFF;
 	private final Queue<Character> mSymbolsQueue = new LinkedList<Character>();
-/*	
+	
 	private float x;
 	private float y;
 	private boolean ongoingGesture = false;
@@ -55,7 +55,7 @@ public class IMEView extends RelativeLayout {
 	public boolean getState() {
 		return ongoingGesture;
 	}
-*/
+
 	private enum ShiftState {
 		OFF, ON, CAPS_LOCK
 	};
