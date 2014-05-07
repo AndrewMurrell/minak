@@ -16,32 +16,40 @@
 
 package us.minak;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.FileEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.app.ListActivity;
-import android.os.Bundle;
-import android.os.AsyncTask;
-import android.os.Environment;
-import android.view.View;
-import android.view.ContextMenu;
-import android.view.MenuItem;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.gesture.Gesture;
-import android.gesture.GestureLibrary;
-import android.widget.TextView;
-import android.widget.AdapterView;
-import android.widget.Toast;
-import android.widget.ArrayAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.gesture.Gesture;
+import android.gesture.GestureLibrary;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.BitmapDrawable;
-
-import java.util.Map;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Comparator;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Environment;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class SettingsActivity extends ListActivity {
 	private static final int STATUS_SUCCESS = 0;
@@ -80,6 +88,25 @@ public class SettingsActivity extends ListActivity {
 			mTask.cancel(true);
 		}
 		mTask = (GesturesLoadTask) new GesturesLoadTask().execute();
+	}
+
+	public void uploadGesture() {
+	    // Create a new HttpClient and Post Header
+	    HttpClient httpclient = new DefaultHttpClient();
+	    HttpPost httppost = new HttpPost("https://lukeshu.com/minak-server");
+
+	    try {
+	    //FileInputStream stream = new FileInputStream(SettingsUtil.getGestureFile(this));
+	        httppost.setEntity(new FileEntity(SettingsUtil.getGestureFile(this), "application/octet-stream"));
+	        HttpResponse response = httpclient.execute(httppost);
+
+			Toast toast = Toast.makeText(this, response.toString(), Toast.LENGTH_LONG);
+			toast.show();
+	    } catch (ClientProtocolException e) {
+	        // TODO Auto-generated catch block
+	    } catch (IOException e) {
+	        // TODO Auto-generated catch block
+	    }
 	}
 
 	private void checkForEmpty() {
