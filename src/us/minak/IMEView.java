@@ -31,7 +31,7 @@ public class IMEView extends RelativeLayout {
 	private Button mShiftButton;
 	private ShiftState mShiftState = ShiftState.OFF;
 	private final Queue<Character> mSymbolsQueue = new LinkedList<Character>();
-	
+
 	private enum ShiftState {
 		OFF, ON, CAPS_LOCK
 	};
@@ -163,7 +163,4 @@ public class IMEView extends RelativeLayout {
 			throw new IllegalArgumentException();
 		}
 	}
-
-
-
 }
