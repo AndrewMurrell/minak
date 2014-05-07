@@ -3,7 +3,7 @@
     package="us.minak"
     android:versionCode="1"
     android:versionName="1.0" >
-
+	<uses-permission android:name="android.permission.INTERNET" />
     <uses-sdk
         android:minSdkVersion="12"
         android:targetSdkVersion="19" />
@@ -42,5 +42,4 @@
             android:name="SettingsCreateGestureActivity"
             android:label="@string/label_create_gesture" />
     </application>
-
 </manifest>
