@@ -38,7 +38,7 @@
 
     <!-- Temporary labels for buttons -->
     <string name="button_shift">Shift</string>
-    <string name="button_backspace">&x2190;</string>
+    <string name="button_backspace">&#x2190;</string>
     <string name="button_space">Space</string>
 
 </resources>
