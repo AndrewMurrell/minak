@@ -20,4 +20,12 @@
         android:gestureStrokeSquarenessThreshold="0.0"
         android:gestureStrokeType="multiple" />
 
+    <Button
+        android:id="@+id/backspace_btn"
+        android:text="@string/button_backspace"
+
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true" />
+
 </us.minak.IMEView>
