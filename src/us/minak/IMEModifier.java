@@ -1,6 +1,6 @@
 package us.minak;
 
-public class MetaExpression {
+public class IMEModifier {
 	public static enum State {
 		ON, OFF, LOCK
 	}
@@ -17,7 +17,7 @@ public class MetaExpression {
 		this.value = value;
 	}
 
-	MetaExpression(String value) {
+	IMEModifier(String value) {
 		this.value = value;
 		this.state = State.OFF;
 	}
