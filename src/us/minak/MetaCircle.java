@@ -1,7 +1,5 @@
 package us.minak;
 
-import android.graphics.Color;
-
 /*
  *	Not sure if this should be drawable or what.
  *
@@ -23,5 +21,9 @@ public class MetaCircle {
 		this.color = color;
 		this.expanded = false;
 		this.expansion = 0;
+	}
+
+	public boolean containsPoint(float x, float y) {
+		return Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2) < Math.pow(this.radius, 2) ? true : false;
 	}
 }
