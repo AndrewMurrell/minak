@@ -16,43 +16,32 @@
 
 package us.minak;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.FileEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import android.app.Activity;
 import android.app.ListActivity;
+import android.os.Bundle;
+import android.os.AsyncTask;
+import android.os.Environment;
+import android.view.View;
+import android.view.ContextMenu;
+import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.gesture.Gesture;
+import android.gesture.GestureLibrary;
+import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.Toast;
+import android.widget.ArrayAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.gesture.Gesture;
-import android.gesture.GestureLibrary;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.graphics.drawable.BitmapDrawable;
+
+import java.util.Map;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Comparator;
 
 public class SettingsActivity extends ListActivity {
 	private static final int STATUS_SUCCESS = 0;
@@ -93,17 +82,6 @@ public class SettingsActivity extends ListActivity {
 		mTask = (GesturesLoadTask) new GesturesLoadTask().execute();
 	}
 
-	public void uploadGestures() {
-	    // Create a new HttpClient and Post Header
-		   PostTask task = new PostTask();
-		   task.setActivity(this);
-		   task.execute("https://lukeshu.com/minak-server");
-	}
-
-	public void uploadGestures(View view) {
-		uploadGestures();
-	}
-
 	private void checkForEmpty() {
 		if (mAdapter.getCount() == 0) {
 			mEmptyMessageView.setText(R.string.gestures_empty);
@@ -111,7 +89,7 @@ public class SettingsActivity extends ListActivity {
 	}
 
 	// Basic life-cycle ///////////////////////////////////////////////////////
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -331,66 +309,5 @@ public class SettingsActivity extends ListActivity {
 
 			return convertView;
 		}
-	}
-	
-	class PostTask extends AsyncTask<String, String, String>{
-
-		private SettingsActivity mThis;
-		
-	    @Override
-	    protected String doInBackground(String... uri) {
-	    	
-	    	Log.w(NOTIFICATION_SERVICE, "Begin request");
-	    	
-		    HttpClient httpclient = new DefaultHttpClient();
-		    HttpPost httppost = new HttpPost("http://lukeshu.com/minak-server");
-		    if (!httppost.containsHeader("Host")) {
-		    	httppost.addHeader("Host", "lukeshu.com");
-		    	Log.w(NOTIFICATION_SERVICE, "added host header");
-	    	}else{
-		    	Log.w(NOTIFICATION_SERVICE, "did not add host header");
-	    	}
-		    for (Header header : httppost.getAllHeaders()) {
-		    	Log.d("header", header.toString());
-		    }
-		    
-		    HttpResponse response = null;
-		    try {
-		    	httppost.setEntity(new FileEntity(SettingsUtil.getGestureFile(mThis), "application/octet-stream"));
-		    	Log.d("postdata", httppost.getEntity().getContent().toString());
-		        response = httpclient.execute(httppost);
-		    	Log.w(NOTIFICATION_SERVICE, "Extend");
-
-				Toast toast = Toast.makeText(mThis, response.toString(), Toast.LENGTH_LONG);
-				toast.show();
-
-		    } catch (ClientProtocolException e) {
-		    	Log.w(NOTIFICATION_SERVICE, "fil");
-		        // TODO Auto-generated catch block
-		    } catch (IOException e) {
-		    	Log.w(NOTIFICATION_SERVICE, e.getMessage());
-		    	e.printStackTrace();
-		        // TODO Auto-generated catch block
-		    }catch (Exception e){
-		    	Log.w(NOTIFICATION_SERVICE, e.getMessage());
-		    }
-
-		    if (response != null){
-		    	return response.toString();
-		    } else {
-		    	return "";
-		    }
-	    }
-	    
-	    @Override
-	    protected void onPostExecute(String result) {
-	        //Do anything with response..
-	    	;
-	    }
-	    
-	    public void setActivity(Activity ack) {
-	    	mThis = (SettingsActivity) ack;
-	    }
-	    
 	}
 }
