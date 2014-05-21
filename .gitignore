@@ -1,6 +1,8 @@
 /.settings
 /bin
 /gen
+/build.xml
+/local.properties
 
 *~
 .nfs*
